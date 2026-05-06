@@ -4,7 +4,6 @@ const app = express();
 const port = process.env.PORT || 5000;
 const cors = require("cors");
 
-
 // middleware
 app.use(cors());
 app.use(express.json());
@@ -32,8 +31,12 @@ async function run() {
     app.post("/books", async (req, res) => {
       const newBooks = req.body;
       console.log(newBooks);
-       const result = await bookCollection.insertOne(newBooks)
-      res.send(result)
+      const result = await bookCollection.insertOne(newBooks);
+      res.send(result);
+    });
+    app.get("/books", async (req, res) => {
+      const cursor = await bookCollection.find().toArray();
+      res.send(cursor);
     });
   } finally {
   }
@@ -41,7 +44,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello from basic CRUD server 🦋");
 });
 
 app.listen(port, () => {
